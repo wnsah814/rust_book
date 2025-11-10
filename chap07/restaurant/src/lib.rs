@@ -1,6 +1,14 @@
 use std::fmt::Result;
 use std::io::Result as IoResult; 
 
+// fn function1() -> Result {
+//     // --snip--
+// }
+
+// fn function2() -> IoResult<()> {
+//     // --snip--
+// }
+
 // use std::cmp::Ordering;
 // use set::io;
 // nested path
@@ -9,29 +17,7 @@ use std::{cmp::Ordering, io};
 // global operator
 use std::collections::*;
 
-fn function1() -> Result {
-    // --snip--
-}
-
-fn function2() -> IoResult<()> {
-    // --snip--
-}
-
-mod front_of_house {
-    pub mod hosting {
-        pub fn add_to_waitlist() {}
-
-        fn seat_at_table() {}
-    }
-
-    mod serving {
-        fn take_order() {}
-
-        fn serve_order() {}
-
-        fn take_payment() {}
-    }
-}
+mod front_of_house;
 
 // Re-exporting with pub use
 pub use crate::front_of_house::hosting;
