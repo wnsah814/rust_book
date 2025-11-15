@@ -1,29 +1,53 @@
 use std::collections::HashMap;
 
 fn main() {
-    let mut v = vec![1, 3, 4, 3, 2, 1];
-    let mut count = HashMap::new();
+    let v = vec![1, 3, 4, 3, 2, 1];
 
-    v.sort();
+    println!("Original vector: {:?}", v);
 
-    println!("Sorted vector: {:?}", v);
-
-    println!("The median is: {}", v[v.len() / 2]);
-
-    for i in &v {
-        let counter = count.entry(i).or_insert(0);
-        *counter += 1;
+    match calc_median(&v) {
+        Some(median) => println!("Median: {}", median),
+        None => println!("Median: Vector is empty"),
     }
 
-    let mut mode = 0;
-    let mut max_count = 0;
+    match calc_mode(&v) {
+        Some(mode) => println!("Mode: {}", mode),
+        None => println!("Mode: Vector is empty"),
+    }
+}
 
-    for (key, value) in count {
-        if value > max_count {
-            max_count = value;
-            mode = *key;
-        }
+fn calc_median(v: &Vec<i32>) -> Option<i32> {
+    if v.is_empty() {
+        return None;
     }
 
-    println!("The mode is: {}", mode);
+    let mut sorted = v.clone();
+    sorted.sort();
+
+    let len = sorted.len();
+    let median = if len % 2 == 0 {
+        (sorted[len / 2 - 1] + sorted[len / 2]) / 2
+    } else {
+        sorted[len / 2]
+    };
+
+    Some(median)
+}
+
+fn calc_mode(v: &Vec<i32>) -> Option<i32> {
+    if v.is_empty() {
+        return None;
+    }
+
+    let mut occurrences = HashMap::new();
+
+    for &val in v {
+        *occurrences.entry(val).or_insert(0) += 1;
+    }
+
+    // iterator chaining, clousure
+    occurrences
+        .into_iter()
+        .max_by_key(|&(_, count)| count)
+        .map(|(num, _)| num)
 }
